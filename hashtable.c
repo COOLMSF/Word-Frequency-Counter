@@ -30,8 +30,10 @@ struct node * add(hashtable *h, char *key, int freq) {
     struct node *current = h->table[index];
 
     /* Search for duplicate value */
+    // hash collision?
     while(current != NULL) {
         if(strcmp(key, current->key) == 0)
+            // should be linked based hash table, rather than just return
             return current;
         current = current->next;
     }
@@ -111,6 +113,51 @@ void mostfrequent(hashtable *h, int freq) {
                 printf("  %-14s %d\n", current->key, current->frequency);
             current = current->next;
         }
+    }
+}
+
+void freq_top_n_sorted(hashtable *h, int n) {
+    struct node *current = NULL;
+    struct node *tmp = NULL;
+    int i, j;
+    int cnt = 0;
+    int size = h->tablesize;
+    int node_array_size = h->currentsize;
+
+    struct node *node_array[node_array_size];
+
+    // store hash table to array
+    for (int i = 0; i < size; i++) {
+        // make sure not NULL
+        if (h->table[i] != NULL) {
+            node_array[cnt] = h->table[i];
+            // calulate length
+            cnt++;
+        }
+    }
+
+    // bubble sort
+    for (int i = 0; i < cnt; i++) {
+        for (int j = 0; j < cnt - 1; j++) {
+            if (node_array[i]->frequency > node_array[j]->frequency) {
+                struct node *t;
+
+                t = node_array[i];
+                node_array[i] = node_array[j];
+                node_array[j] = t;
+            }
+        }
+    }
+
+    printf("\n  Word       Frequency\n");
+    printf("  --------------------\n");
+
+    // print hashtable
+    for (int i = 0; i < cnt; i++) {
+        if (i == n) {
+            break;
+        }
+        printf("  %-14s %d\n", node_array[i]->key, node_array[i]->frequency);
     }
 }
 

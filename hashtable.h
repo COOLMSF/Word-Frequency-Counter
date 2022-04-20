@@ -32,6 +32,7 @@ typedef struct hashtable hashtable;
  */
 struct node * add(hashtable *, char *, int);
 
+
 /**
  * Checks is a key value is stored in the table.
  * @param hashtable *, pointer to struct containing the hash table.
@@ -64,6 +65,7 @@ void deletenode(hashtable *, char *);
  * @param int, minimum frequency value.
  */
 void mostfrequent(hashtable *, int);
+void freq_top_n_sorted(hashtable *, int);
 
 /**
  * Initializes a new hash table. Allocates memory for an array.
